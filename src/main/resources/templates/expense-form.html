@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>New Expense</title>
+  <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+<nav layout:fragment="nav"></nav>
+<div layout:fragment="body" class="bg-secondary" id="layoutSidenav">
+<div id="layoutSidenav_nav">
+  <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+    <div class="sb-sidenav-menu">
+      <div class="nav">
+        <div class="sb-sidenav-menu-heading">Core</div>
+        <a class="nav-link" href="/">
+          <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+          Dashboard
+        </a>
+        <div class="sb-sidenav-menu-heading">Interface</div>
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+          <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+          Layouts
+          <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+        </a>
+        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="layout-static">Static Navigation</a>
+            <a class="nav-link" href="layout-sidenav-light">Light Sidenav</a>
+          </nav>
+        </div>
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+          <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+          Pages
+          <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+        </a>
+        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+          <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+              Authentication
+              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+              <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="login">Login</a>
+                <a class="nav-link" href="register">Register</a>
+                <a class="nav-link" href="password">Forgot Password</a>
+              </nav>
+            </div>
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
+              Error
+              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+              <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="401">401 Page</a>
+                <a class="nav-link" href="404">404 Page</a>
+                <a class="nav-link" href="500">500 Page</a>
+              </nav>
+            </div>
+          </nav>
+        </div>
+        <div class="sb-sidenav-menu-heading">Addons</div>
+        <a class="nav-link" href="charts">
+          <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+          Charts
+        </a>
+        <a class="nav-link" href="tables">
+          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+          Tables
+        </a>
+      </div>
+    </div>
+    <div class="sb-sidenav-footer">
+      <div class="small">Logged in as:</div>
+      Start Bootstrap
+    </div>
+  </nav>
+</div>
+<div id="layoutSidenav_content">
+    <main>
+      <div class="container-fluid px-4">
+        <div class="row justify-content-center">
+          <div class="col-lg-5">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+              <div class="card-header"><h3 class="text-center font-weight-light my-4">New Expense</h3></div>
+              <div class="card-body">
+                <form role="form" method="post" th:action="@{/expenses/new}" th:object="${expense}">
+                  <div class="form-floating mb-3">
+                    <input class="form-control"
+                           id="inputExpenseName"
+                           name="expenseName"
+                           th:field="*{expenseName}"
+                           type="text"
+                           required/>
+                    <p th:if="${#fields.hasErrors('expenseName')}" class="text-danger" th:errors="*{expenseName}"></p>
+                    <label for="inputExpenseName">Description</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input class="form-control"
+                           id="inputAmount"
+                           name="amount"
+                           th:field="*{amount}"
+                           step="0.01"
+                           min="0.01"
+                           type="number"
+                           required/>
+                    <p th:if="${#fields.hasErrors('amount')}" class="text-danger" th:errors="*{amount}"></p>
+                    <label for="inputAmount">Amount</label>
+                  </div>
+                  <div class="mb-3">
+                    <label for="inputDate">Date</label>
+                    <input class="form-control"
+                           id="inputDate"
+                           name="transactionDate"
+                           th:field="*{transactionDate}"
+                           th:attr="max=${#dates.format(#dates.createToday(), 'yyyy-MM-dd')}"
+                           type="date"
+                           required>
+                    <p th:if="${#fields.hasErrors('transactionDate')}" class="text-danger" th:errors="*{transactionDate}"></p>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                    <a class="btn btn-danger" th:href="@{/expenses}">Cancel</a>
+                    <button class="btn btn-primary" type="submit">Save</button>
+                  </div>
+                </form>
+              </div>
+              <div class="card-footer text-center py-3">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  <footer class="bg-dark py-4 mt-auto">
+    <div class="container px-5">
+      <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+        <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; Your Website 2022</div></div>
+        <div class="col-auto">
+          <a class="link-light small" href="#!">Privacy</a>
+          <span class="text-white mx-1">&middot;</span>
+          <a class="link-light small" href="#!">Terms</a>
+          <span class="text-white mx-1">&middot;</span>
+          <a class="link-light small" href="#!">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+</div>
+<!--<footer layout:fragment="footer"></footer>-->
+</html>
